@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>给肖倩宝贝 · Apple 风高级简约（稳定修复版）</title>
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    :root{
+      --bg1:#FFEFF5; --bg2:#FFE2EC; --ink:#111; --muted:#6b6b6b; --accent:#ff6b9a;
+      --card: rgba(255,255,255,.85); --ring:#ff8bb2; --radius:24px; --shadow:0 20px 50px rgba(0,0,0,.08);
+      --glass: saturate(1.2) blur(18px);
+      --surface: rgba(255,255,255,.55);
+
+      /* 计时器数字可调变量（桌面默认） */
+      --digit-w: 64px;
+      --digit-h: 92px;
+      --digit-radius: 18px;
+      --digit-fs: 56px;
+      --sep-fs: 32px;
+
+      --h2-fs: 26px;
+      --text-base: 16px;
+      --container-px: 18px;
+      --card-p: 22px;
+      --nav-py: 14px;
+      --nav-px: 18px;
+      --fab: 58px;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{ --bg1:#2b1920; --bg2:#1b1015; --ink:#f2f2f2; --muted:#9a9aa3; --card: rgba(28,28,30,.72); --surface: rgba(38,38,40,.55); --shadow: 0 18px 40px rgba(0,0,0,.55); }
+    }
+
+    /* ====== 全局 ====== */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{ margin:0; color:var(--ink);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Noto Sans SC","Helvetica Neue",Arial,sans-serif;
+      font-size: var(--text-base);
+      letter-spacing:.2px;
+      background: radial-gradient(900px 500px at 6% -20%, #fff 0%, #fff0 50%),
+                  radial-gradient(1100px 700px at 120% 30%, #fff 0%, #fff0 40%),
+                  linear-gradient(128deg,var(--bg1),var(--bg2));
+      background-attachment:fixed;
+    }
+
+    /* ====== 顶部导航 ====== */
+    .nav{position:sticky;top:0;z-index:20;background:var(--surface);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border-bottom:1px solid rgba(0,0,0,.06)}
+    .navin{max-width:1180px;margin:0 auto;padding:var(--nav-py) var(--nav-px);display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{font-weight:800;letter-spacing:.3px;font-size:18px;white-space:nowrap}
+    .seg{display:flex;gap:8px;padding:6px;background:rgba(0,0,0,.05);border-radius:999px;overflow:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    .seg::-webkit-scrollbar{display:none}
+    .seg button{border:none;background:transparent;padding:10px 16px;border-radius:999px;font-weight:700;cursor:pointer;transition:transform .08s ease, box-shadow .2s ease;flex:0 0 auto}
+    .seg button.active{background:#fff;box-shadow:0 10px 22px rgba(0,0,0,.08)}
+    .seg button:active{transform: scale(.98) translateY(1px)}
+
+    /* ====== 容器 & 卡片 ====== */
+    main{max-width:1180px;margin:28px auto 120px;padding:0 var(--container-px);display:flex;flex-direction:column;gap:22px}
+    section.card{background:var(--card);border:1px solid rgba(255,255,255,.9);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--card-p)}
+    h2{margin:0 0 12px 0;font-size:var(--h2-fs);font-weight:900;letter-spacing:.2px}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* ====== 行/表单通用 ====== */
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(0,0,0,.05);font-size:13px}
+    .group{display:inline-flex;align-items:center;border-radius:14px;background:#fff;border:1px solid rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06);overflow:hidden;flex:1 1 auto;min-width:220px}
+    .group .label{padding:0 10px;color:var(--muted);font-size:13px;white-space:nowrap}
+    .input{appearance:none;-webkit-appearance:none;border:0;outline:none;padding:10px 12px;background:transparent;font:inherit;min-width:0}
+    .input::-webkit-date-and-time-value{min-height:1.6em}
+    .input[type="number"]{width:90px;text-align:center}
+    .group:focus-within{box-shadow:0 0 0 4px rgba(255,107,154,.15),0 2px 8px rgba(0,0,0,.08)}
+    .btn{padding:10px 16px;border:none;border-radius:12px;background:linear-gradient(135deg,#ff8bb2,#ff6b9a);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 14px 26px rgba(255,107,154,.22);transition:transform .06s ease;flex:0 0 auto}
+    .btn:active{transform:scale(.98) translateY(1px)}
+    @media (prefers-color-scheme: dark){
+      .group{background:#2c2c2e;border-color:rgba(255,255,255,.08);box-shadow:0 2px 10px rgba(0,0,0,.35)}
+      .input{color:#f2f2f2}
+    }
+
+    /* ====== 计时器（翻牌） ====== */
+    .timer{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap}
+    .set{display:flex;gap:8px;align-items:flex-end}
+    .digit{width:var(--digit-w);height:var(--digit-h);border-radius:var(--digit-radius);overflow:hidden;background:linear-gradient(#fff,#ffeef4);border:1px solid #fff;box-shadow:inset 0 2px 0 #fff, 0 10px 28px rgba(0,0,0,.08);position:relative}
+    .rail{position:absolute;left:0;right:0;top:0;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+    .rail span{display:block;height:var(--digit-h);line-height:var(--digit-h);text-align:center;font-weight:900;font-size:var(--digit-fs);color:#31141c}
+    .unit{font-size:12px;color:var(--muted);text-align:center;margin-top:6px}
+    .sep{font-size:var(--sep-fs);opacity:.38;padding:0 2px}
+
+    /* ====== 天气小卡横排 ====== */
+    .wrow{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+    .wcard{flex:0 0 auto;min-width:160px;background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:16px;padding:14px;box-shadow:0 8px 20px rgba(0,0,0,.06);text-align:center}
+    @media (prefers-color-scheme: dark){.wcard{background:#2c2c2e;border-color:rgba(255,255,255,.08)}}
+
+    /* ====== 倒计时卡 ====== */
+    /* 改为自适应列：每块最小 240px，其余自动填充 */
+    .cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+    .c{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:18px;padding:16px;box-shadow:0 12px 26px rgba(0,0,0,.06)}
+    .c h3{margin:0 0 6px 0;font-size:18px;font-weight:800}
+    .big{font-size:28px;font-weight:900}
+    @media (prefers-color-scheme: dark){.c{background:#2c2c2e;border-color:rgba(255,255,255,.08)}}
+
+    /* ====== 小提示 chips ====== */
+    .tips{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+    .chip{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;background:#fff;border:1px solid rgba(0,0,0,.06);box-shadow:0 4px 12px rgba(0,0,0,.05);font-size:14px}
+    @media (prefers-color-scheme: dark){.chip{background:#2c2c2e;border-color:rgba(255,255,255,.08)}}
+
+    /* ====== 悬浮音乐按钮 ====== */
+    .fab{position:fixed; right:22px; bottom:22px; width:var(--fab); height:var(--fab); border-radius:50%; background:linear-gradient(135deg,#ff8bb2,#ff6b9a); color:#fff; display:grid; place-items:center; box-shadow:0 18px 38px rgba(255,107,154,.35); cursor:pointer; z-index:50; border: none}
+    .fab:active{transform:scale(.96)}
+    .visually-hidden{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0}
+
+    /* ====== 手机端自适应（≤ 640px） ====== */
+    @media (max-width: 640px){
+      :root{
+        --digit-w: 42px;
+        --digit-h: 64px;
+        --digit-radius: 12px;
+        --digit-fs: 36px;
+        --sep-fs: 22px;
+
+        --h2-fs: 20px;
+        --text-base: 15px;
+        --container-px: 12px;
+        --card-p: 16px;
+        --nav-py: 10px;
+        --nav-px: 12px;
+        --fab: 52px;
+      }
+      .brand{font-size:16px}
+      .timer{gap:10px}
+      .set{gap:6px}
+      .wcard{min-width:140px;padding:12px}
+      .btn{padding:10px 14px}
+      /* 表单组在窄屏自动占满一行 */
+      .group{flex:1 1 100%}
+    }
+
+    /* ====== 超小屏（≤ 360px） ====== */
+    @media (max-width: 360px){
+      :root{
+        --digit-w: 36px;
+        --digit-h: 56px;
+        --digit-fs: 30px;
+      }
+      .seg button{padding:8px 12px}
+    }
+  </style>
+</head>
+<body>
+  <div class="nav"><div class="navin">
+    <div class="brand">给肖倩宝贝</div>
+    <div class="seg" id="seg">
+      <button class="active" data-target="#sec-love">我们</button>
+      <button data-target="#sec-weather">天气</button>
+      <button data-target="#sec-period">姨妈</button>
+      <button data-target="#sec-letter">情书</button>
+      <button data-target="#sec-festival">倒计时</button>
+    </div>
+  </div></div>
+
+  <main>
+    <!-- 我们认识多久 -->
+    <section id="sec-love" class="card">
+      <h2>我们认识了</h2>
+      <div class="timer">
+        <div class="set" data-unit="天" id="dset"></div>
+        <div class="set" data-unit="小时" id="hset"></div>
+        <div class="set" data-unit="分钟" id="mset"></div>
+        <div class="set" data-unit="秒" id="sset"></div>
+      </div>
+      <div class="muted" style="margin-top:6px">起始：2022-04-28 01:34:52</div>
+    </section>
+
+<!-- 天气：横向小卡片 -->
+<section id="sec-weather" class="card">
+  <h2>天气预报</h2>
+  <div class="row" style="margin-top:2px">
+    <div class="group" style="display:flex; align-items:center; flex:1; min-width:220px;">
+      <input id="city" class="input" type="text" placeholder="城市（如：乐山）" style="flex:1; border:none; outline:none; padding:10px 12px; background:transparent;">
+      <button class="btn" id="goCity" style="border-radius:0; flex:0 0 auto;">搜索</button>
+    </div>
+    <span class="pill" id="cityInfo" style="display:none"></span>
+  </div>
+  <div class="wrow" id="wrow" style="margin-top:10px"></div>
+  <div class="muted" style="margin-top:6px">* 首次打开将调用系统定位授权；若拒绝自动回退到乐山。</div>
+</section>
+
+
+    <!-- 姨妈预测 -->
+    <section id="sec-period" class="card">
+      <h2>姨妈预测</h2>
+      <div class="row">
+        <div class="group"><span class="label">上次</span><input type="date" id="pLast" class="input"></div>
+        <div class="group"><span class="label">周期</span><input type="number" id="pCycle" class="input" value="28" min="18" max="60" style="width:80px;text-align:center"><span class="label">天</span></div>
+        <div class="group"><span class="label">经期</span><input type="number" id="pLen" class="input" value="5" min="2" max="10" style="width:80px;text-align:center"><span class="label">天</span></div>
+        <button class="btn" id="pSave">保存并预测</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <span class="pill">下一次</span>
+        <div class="pill" id="pSummary" style="display:none"></div>
+      </div>
+      <div id="pList" class="wrow" style="margin-top:8px"></div>
+      <div class="tips">
+        <div class="chip">💗 保暖：暖宫贴/热水袋 20–30 分钟</div>
+        <div class="chip">🧘 轻柔拉伸：猫式、婴儿式、单膝抱胸</div>
+        <div class="chip">🍵 温热饮：红糖姜茶/洋甘菊；少量多餐</div>
+        <div class="chip">🚫 避免：生冷、酒精、过量咖啡因</div>
+        <div class="chip">🛀 热水淋浴、腹部顺时针轻柔按摩</div>
+      </div>
+    </section>
+
+    <!-- 情书（内置文案） -->
+    <section id="sec-letter" class="card">
+      <h2>写给乖宝的情书</h2>
+      <article id="love" style="white-space:pre-wrap; line-height:1.9; font-size:16px; letter-spacing:.1px">
+亲爱的肖倩：
+从2022年4月28日01:34:52起，我们的时间就悄悄连在了一起。日历翻过无数页，每一页都有你的名字——在早安的第一声里，在夜深的最后一条讯息里，在路灯光洒下的肩头，也在雨停后悄悄发亮的人间。
+我喜欢你像春天一样把日常照亮：你皱眉时我想先抱抱你；你开心时我想把那一刻拍下来藏在口袋；你沉默时我会在你身旁坐一会儿，一个眼神就够了。我愿意记住你所有的小习惯——喝水太快会呛、怕冷却不肯穿厚、笑起来左边酒窝更深；也愿意把“照顾你”放进生活的每一个细节：早点、热水、充电线、和一句随时可用的“别怕，有我”。
+未来也许会下雨、也许会很晴，但我希望无论如何，你都把我当作那把随身的伞：风大的时候我更靠近一点；天冷的时候我给你捂热手心；你累了的时候我把肩膀借你。余生很长，我们慢慢走；路很长，我一直在。
+</article>
+    </section>
+
+    <!-- 纪念日 / 倒计时（农历生日、七夕） -->
+    <section id="sec-festival" class="card">
+      <h2>纪念日 · 倒计时</h2>
+      <div class="cgrid">
+        <div class="c">
+          <h3>她的农历生日：七月十三</h3>
+          <div>公历：<span id="bdayDate">—</span></div>
+          <div class="big" id="bdayLeft">—</div>
+        </div>
+        <div class="c">
+          <h3>七夕（七月初七）</h3>
+          <div>公历：<span id="qixiDate">—</span></div>
+          <div class="big" id="qixiLeft">—</div>
+        </div>
+      </div>
+      <div class="muted" style="margin-top:6px">* 内置农历换算（1900–2099），每秒刷新。</div>
+    </section>
+  </main>
+
+  <!-- 音乐：自动播放 + 仅“下一首”按钮 -->
+  <button class="fab" id="nextTrack" aria-label="下一首">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polygon points="5 4 15 12 5 20 5 4"></polygon>
+      <line x1="19" y1="5" x2="19" y2="19"></line>
+    </svg>
+    <span class="visually-hidden">下一首</span>
+  </button>
+  <audio id="player" preload="auto" style="display:none"></audio>
+
+<script>
+/*********** 基础工具 ***********/
+const $=s=>document.querySelector(s); const $$=s=>document.querySelectorAll(s);
+const store={ set:(k,v)=>localStorage.setItem(k,JSON.stringify(v)), get:(k,d=null)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}} };
+const pad=(n,w=2)=>String(n).padStart(w,'0');
+function onSel(sel, evt, handler, opts){ const el=document.querySelector(sel); if(el){ el.addEventListener(evt, handler, opts||{}); } }
+
+/*********** 认识多久（精确到秒） ***********/
+const START_AT=new Date('2022-04-28T01:34:52');
+function buildDigits(el,count){ el.innerHTML=''; for(let i=0;i<count;i++){ const box=document.createElement('div'); box.className='digit'; const rail=document.createElement('div'); rail.className='rail'; for(let d=0; d<=9; d++){ const s=document.createElement('span'); s.textContent=d; rail.appendChild(s);} box.appendChild(rail); el.appendChild(box);} const u=document.createElement('div'); u.className='unit'; u.textContent=el.dataset.unit; el.appendChild(u); }
+function setDigits(el,val){ const rails=el.querySelectorAll('.rail'); const s=String(val).padStart(rails.length,'0'); rails.forEach((rail,i)=>{ const digit=parseInt(s[i],10); const h=rail.firstElementChild.getBoundingClientRect().height||parseFloat(getComputedStyle(rail.firstElementChild).height)||92; rail.style.transform=`translateY(${-h*digit}px)`; }); }
+function ensureDayDigits(){ const days=Math.floor((Date.now()-START_AT)/86400000); const need=Math.max(2,String(days).length); const rails=$('#dset').querySelectorAll('.rail').length; if(rails!==need){ buildDigits($('#dset'), need); } }
+function tick(){ const now=Date.now(); let diff=Math.max(0,Math.floor((now-START_AT)/1000)); const d=Math.floor(diff/86400); diff%=86400; const h=Math.floor(diff/3600); diff%=3600; const m=Math.floor(diff/60); const s=diff%60; ensureDayDigits(); setDigits($('#dset'),d); setDigits($('#hset'),h); setDigits($('#mset'),m); setDigits($('#sset'),s); }
+function initTimer(){ buildDigits($('#dset'),Math.max(2,String(Math.floor((Date.now()-START_AT)/86400000)).length)); buildDigits($('#hset'),2); buildDigits($('#mset'),2); buildDigits($('#sset'),2); tick(); if(window.__t) clearInterval(window.__t); window.__t=setInterval(tick,1000); }
+
+/*********** 天气：系统定位 + 城市搜索 + 横向卡片 ***********/
+function codeToType(code){ if([51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99].includes(code)) return 'rain'; if([45,48].includes(code)) return 'fog'; if([0,1].includes(code)) return 'sunny'; if([2,3].includes(code)) return 'cloudy'; if([71,73,75,77,85,86].includes(code)) return 'snow'; return 'cloudy'; }
+function updateCityInfo(name){ if(!name) return; const t=new Date(); const hh=pad(t.getHours()); const mm=pad(t.getMinutes()); const ci=$('#cityInfo'); ci.style.display='inline-flex'; ci.textContent=`📍 ${name} · 更新 ${hh}:${mm}`; }
+async function fetchWeatherByLatLng(lat,lon){ try{ const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,is_day,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto`; const r=await fetch(url); const j=await r.json(); try{ const gr=await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&language=zh&format=json`); const gj=await gr.json(); if(gj?.results?.length){ const info=gj.results[0]; const name=[info.name, info.admin1, info.country_code].filter(Boolean).join('·'); updateCityInfo(name); } }catch(e){} renderWeather(j); }catch(e){ console.error('weather fetch by latlng',e); }}
+async function fetchWeatherByCity(q){ try{ const geourl=`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=1&language=zh&format=json`; const r=await fetch(geourl); const g=await r.json(); if(!g.results?.length) return alert('没有找到城市'); const info=g.results[0]; const name=[info.name, info.admin1, info.country_code].filter(Boolean).join('·'); updateCityInfo(name); fetchWeatherByLatLng(info.latitude,info.longitude); }catch(e){ console.error('weather by city',e); }}
+function renderWeather(j){ try{ const d=j?.daily; const row=$('#wrow'); row.innerHTML=''; if(!d?.time?.length){ row.innerHTML='<div class="muted">天气获取失败，请稍后重试</div>'; return; } const wk=['周日','周一','周二','周三','周四','周五','周六']; const n=d.time.length; for(let i=0;i<Math.min(n,6);i++){ const dt=new Date(d.time[i]); const type=codeToType(d.weather_code[i]); const icon= type==='rain'?'🌧️':(type==='sunny'?'☀️':(type==='snow'?'❄️':'⛅')); const card=document.createElement('div'); card.className='wcard'; card.innerHTML=`<div style="font-weight:800">${wk[dt.getDay()]} ${dt.getMonth()+1}/${dt.getDate()}</div><div style="font-size:26px;line-height:1">${icon}</div><div style="margin-top:4px">${Math.round(d.temperature_2m_min[i])}~${Math.round(d.temperature_2m_max[i])}°C</div><div class="muted">降水 ${Math.round(d.precipitation_sum[i]||0)}mm</div>`; row.appendChild(card); } }catch(e){ console.error('renderWeather',e); }}
+function requestGeo(){ try{ if(!navigator.geolocation){ fetchWeatherByCity('乐山'); return; } navigator.geolocation.getCurrentPosition(pos=>{ const {latitude,longitude}=pos.coords; fetchWeatherByLatLng(latitude,longitude); }, err=>{ fetchWeatherByCity('乐山'); }, {enableHighAccuracy:true, maximumAge:600000, timeout:15000}); }catch(e){ console.error('requestGeo',e); fetchWeatherByCity('乐山'); }}
+
+/*********** 姨妈预测 ***********/
+function computePeriod(){ try{ const last=$('#pLast').value; const cycle=parseInt($('#pCycle').value||28); const len=parseInt($('#pLen').value||5); if(!last){ $('#pSummary').style.display='none'; return alert('请先填写上次日期'); }
+  const lastDate=new Date(last); const today=new Date(); today.setHours(0,0,0,0); const list=[]; for(let i=1;i<=3;i++){ const start=new Date(lastDate.getTime()+i*cycle*86400000); const end=new Date(start.getTime()+(len-1)*86400000); const ovu=new Date(start.getTime()-14*86400000); const fs=new Date(ovu.getTime()-5*86400000); const fe=new Date(ovu.getTime()+86400000); list.push({start,end,ovu,fs,fe}); }
+  const next=list.find(x=>x.start>=today)||list[0]; const daysLeft=Math.ceil((next.start-today)/86400000); const f=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; const sum=$('#pSummary'); sum.style.display='inline-flex'; sum.textContent=`${f(next.start)} ～ ${f(next.end)} · 还剩 ${daysLeft} 天 · 易孕 ${f(next.fs)}～${f(next.fe)}`;
+  const pl=$('#pList'); pl.innerHTML=''; list.forEach((x,i)=>{ const s=document.createElement('div'); s.className='wcard'; s.style.minWidth='220px'; s.textContent=`第${i+1}次：${f(x.start)}～${f(x.end)}（排卵：${f(x.ovu)}）`; pl.appendChild(s); });
+  store.set('pLast',last); store.set('pCycle',cycle); store.set('pLen',len); }catch(e){ console.error('computePeriod',e); }}
+
+/*********** 音乐（仅“下一首”按钮） ***********/
+let list=[], idx=0; const audio=$('#player');
+async function loadPlaylist(){ try{ const r=await fetch('playlist.json',{cache:'no-cache'}); if(r.ok){ const j=await r.json(); if(Array.isArray(j)&&j.length){ list=j; return; } } }catch(e){}
+  if(!list.length){ for(let i=1;i<=10;i++) list.push(`${i}.mp3`); }
+}
+function playNow(){ if(!list.length) return; audio.src=list[idx]; audio.play().catch(()=>{}); }
+
+/*********** 农历（1900–2099） → 公历 & 倒计时 ***********/
+const LUNAR_INFO=[0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,0x06ca0,0x0b550,0x15355,0x04da0,0x0a5d0,0x14573,0x052d0,0x0a9a8,0x0e950,0x06aa0,0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b5a0,0x195a6,0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x05ac0,0x0ab60,0x096d5,0x092e0,0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,0x05aa0,0x076a3,0x096d0,0x04bd7,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,0x14b63,0x09370,0x049f8,0x04970,0x064b0,0x168a6,0x0ea50,0x06b20,0x1a6c4,0x0aae0,0x0a2e0,0x0d2e3,0x0c960,0x0d557,0x0d4a0,0x0da50,0x05d55,0x056a0,0x0a6d0,0x055d4,0x052d0,0x0a9b8,0x0a950,0x0b4a0,0x0b6a6,0x0ad50,0x055a0,0x0aba4,0x0a5b0,0x052b0,0x0b273,0x06930,0x07337,0x06aa0,0x0ad50,0x14b55,0x04b60,0x0a570,0x054e4,0x0d160,0x0e968,0x0d520,0x0daa0,0x16aa6,0x056d0,0x04ae0,0x0a9d4,0x0a2d0,0x0d150,0x0f252,0x0d520,0x0dd45,0x0b5a0,0x056d0,0x0b6a4,0x0aae0,0x0a2e0,0x0d2e0,0x0c960,0x0d557,0x0d4a0,0x0da50,0x05d55,0x056a0,0x0a6d0,0x055d4,0x052d0,0x0a9b8,0x0a950,0x0b4a0,0x0b6a6,0x0ad50,0x055a0,0x0aba4,0x0a5b0,0x052b0,0x0b273,0x06930,0x07337];
+function leapMonth(y){return LUNAR_INFO[y-1900]&0xf}
+function leapDays(y){const lm=leapMonth(y);if(lm){return (LUNAR_INFO[y-1900]&0x10000)?30:29}return 0}
+function monthDays(y,m){return (LUNAR_INFO[y-1900]&(0x10000>>m))?30:29}
+function lYearDays(y){let sum=348;for(let i=0x8000;i>0x8;i>>=1){sum+=(LUNAR_INFO[y-1900]&i)?1:0}return sum+leapDays(y)}
+function lunarToSolar(y,m,d,isLeap=false){let days=0;for(let i=1900;i<y;i++){days+=lYearDays(i)}const lm=leapMonth(y);for(let i=1;i<m;i++){days+=monthDays(y,i);if(i===lm)days+=leapDays(y)}if(lm&&m===lm&&isLeap){days+=monthDays(y,m)}days+=d-1;const base=new Date(1900,0,31);return new Date(base.getTime()+days*86400000)}
+function nextSolarFromLunar(lm,ld){const now=new Date();let y=now.getFullYear();let s=lunarToSolar(y,lm,ld,false);if(s<now){y++;s=lunarToSolar(y,lm,ld,false)}return s}
+function fmtCountdownSec(target){ const now=new Date(); let sec=Math.max(0,Math.floor((target-now)/1000)); const d=Math.floor(sec/86400); sec%=86400; const h=Math.floor(sec/3600); sec%=3600; const m=Math.floor(sec/60); const s=sec%60; return `${d} 天 ${pad(h)}:${pad(m)}:${pad(s)}`; }
+function updateFest(){ try{ const b=nextSolarFromLunar(7,13); $('#bdayDate').textContent=`${b.getFullYear()}-${pad(b.getMonth()+1)}-${pad(b.getDate())}`; $('#bdayLeft').textContent=fmtCountdownSec(b); const q=nextSolarFromLunar(7,7); $('#qixiDate').textContent=`${q.getFullYear()}-${pad(q.getMonth()+1)}-${pad(q.getDate())}`; $('#qixiLeft').textContent=fmtCountdownSec(q);}catch(e){ console.error('festival', e); }}
+
+/*********** 统一初始化（确保不阻塞） ***********/
+document.addEventListener('DOMContentLoaded', ()=>{
+  // 导航
+  onSel('#seg','click', (e)=>{ if(e.target.tagName==='BUTTON'){ $$('#seg button').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); const t=document.querySelector(e.target.dataset.target); if(t){ t.scrollIntoView({behavior:'smooth',block:'start'}); } } });
+  // 计时器
+  try{ initTimer(); }catch(e){ console.error('initTimer failed', e); }
+  // 纪念日
+  try{ updateFest(); setInterval(updateFest, 1000); }catch(e){ console.error('fest init failed', e); }
+  // 天气
+  try{ requestGeo(); }catch(e){ console.error('geo failed', e); }
+  onSel('#goCity','click', ()=>{ const el=$('#city'); if(!el) return; const q=el.value.trim(); if(q) fetchWeatherByCity(q); });
+  // 姨妈
+  onSel('#pSave','click', computePeriod);
+  try{ const a=store.get('pLast'); if(a) $('#pLast').value=a; const b=store.get('pCycle'); if(b) $('#pCycle').value=b; const c=store.get('pLen'); if(c) $('#pLen').value=c; if(a) computePeriod(); }catch(e){ console.error('period init', e); }
+  // 音乐
+  onSel('#nextTrack','click', ()=>{ if(!list.length) return; idx=(idx+1)%list.length; playNow(); });
+  try{ loadPlaylist().then(()=>{ playNow(); }); }catch(e){ console.error('music init', e); }
+  window.addEventListener('pointerdown', function once(){ if(audio && audio.paused){ audio.play().catch(()=>{});} window.removeEventListener('pointerdown', once); }, {passive:true});
+});
+</script>
+</body>
+</html>
